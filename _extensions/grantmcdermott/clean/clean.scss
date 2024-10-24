@@ -4,29 +4,13 @@
 
 $jet: #131516;
 $accent: #43839f;
-// $accent: #107895;
 $accent2: #9a2515;
-// $accent2: #e64173;
 $right-arrow: "\2192"; // Unicode character for right arrow
 $verdecito: #568666;
-$bgfull: #40666e;
+$maincolor: #40666e;
 
 // fonts
 
-/*
-Note: This theme uses the Roboto font family, which it imports from Google
-  Fonts to ensure consistent weighting in addition to availability. While
-  you can use a local installation of Roboto, this is generally not 
-  recommended since the weighting will likely be wrong (probably too
-  light). OTOH, importing from Google Fonts can cause some issues in
-  certain secure environments due the external CDN (see:
-  https://github.com/grantmcdermott/quarto-revealjs-clean/issues/7). If
-  that's the case for you, simply comment out the `@import url(...)` line
-  below and it will default for the default Sans Serif font on your system
-  (e.g., Helvetica on a Mac). Circling back to the earlier point about
-  preserving consistent font weights, you may also wish to remove "Roboto"
-  from the choice set if the family is installed locally.
-*/
 @import url('https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i&display=swap');
 
 $font-family-sans-serif: "Roboto", sans-serif !default;
@@ -34,12 +18,9 @@ $presentation-heading-font: "Roboto", sans-serif !default;
 
 $presentation-heading-color: $jet !default;
 $presentation-heading-font-weight: lighter;
-//$presentation-heading-line-height: 2;
-//$presentation-block-margin: 28px;
 $presentation-font-size-root: 32px;
 
 // colors
-//$body-bg: #f0f1eb !default;
 $body-color: $jet !default;
 $link-color: $accent !default;
 $selection-bg: #26351c !default;
@@ -52,7 +33,6 @@ $selection-bg: #26351c !default;
 }
 
 .reveal p {
-  // font-weight: 300;
   font-weight: lighter;
   margin-top: 1.25em;
 }
@@ -63,9 +43,8 @@ $selection-bg: #26351c !default;
   text-align: left;
 
   .title {
-    color: $bgfull;
+    color: $maincolor;
     font-size: 1.8em;
-    font-weight: 350;
     font-weight: lighter;
   }
 
@@ -80,8 +59,6 @@ $selection-bg: #26351c !default;
   .quarto-title-affiliation,
   .quarto-title-author-email {
     font-style: italic;
-    // font-size: 80%;
-    // color: #7F7F7F;
   }
 
   .author,
@@ -102,9 +79,7 @@ $selection-bg: #26351c !default;
 
 }
 
-
 .reveal h2 {
-  // font-weight: 350;
   font-weight: lighter;
   font-size: 1.4em;
 }
@@ -112,14 +87,12 @@ $selection-bg: #26351c !default;
 .reveal h3 {
   color: $accent;
   font-style: italic;
-  // font-weight: 350;
   font-weight: lighter;
   font-size: 0.95em;
 }
 
 .reveal h4 {
   color: $accent2;
-  // font-weight: 350;
   font-weight: normal;
   margin-top: 1.25em;
 }
@@ -134,11 +107,19 @@ $selection-bg: #26351c !default;
   color: var(--col, $jet);
 }
 
-.bg {
+.bgclassic {
   background-color: var(--col, #fff);
   padding: 0.1em;
   border-radius: 5px;
   display: inline-block;
+}
+
+.bg {
+  background-color: var(--col, $maincolor);
+  padding: 0.1em;
+  border-radius: 5px;
+  display: inline-block;
+  color: #fff;
 }
 
 // lists
@@ -146,12 +127,11 @@ $selection-bg: #26351c !default;
 // Unordered lists
 
 .reveal ul {
-  // font-weight: 300;
   font-weight: lighter;
   padding-left: 16px;
 
   li::marker {
-    color: mix($accent, white, 70%);
+    color: mix($maincolor, white, 70%);
   }
 }
 
@@ -160,7 +140,7 @@ $selection-bg: #26351c !default;
 
   li:before {
     content: $right-arrow;
-    color: mix($accent, white, 60%);
+    color: mix($maincolor, white, 60%);
     display: inline-block;
     width: 1em;
     margin-left: -1em;
@@ -170,13 +150,63 @@ $selection-bg: #26351c !default;
 
 // Ordered lists
 
+// Estilo para listas ordenadas (numeradas)
 .reveal ol {
-  // font-weight: 300;
-  font-weight: lighter;
-  padding-left: 16px;
+  list-style: none !important;  // Elimina el estilo numérico predeterminado
+  padding-left: 0;  // Elimina el padding predeterminado
+  counter-reset: item;  // Resetea el contador para los ítems
 
-  li::marker {
-    color: $accent;
+  li {
+    counter-increment: item;  // Incrementa el contador para cada ítem
+    margin-bottom: 1em;
+    padding-left: 2em;  // Espacio antes del texto, suficiente para el círculo
+
+    position: relative;  // Permite el uso de position para ::before
+
+    &::before {
+      content: counter(item);  // Contador que muestra el número
+      background-color: $maincolor;  // Color de fondo del círculo
+      color: white;  // Color del número dentro del círculo
+      border-radius: 50%;  // Hace que el fondo sea un círculo
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      text-align: center;
+      line-height: 1.5em;  // Alinea verticalmente el número dentro del círculo
+      margin-right: 0.2em;
+      font-weight: bold;
+
+      position: absolute;  // Coloca el número en una posición absoluta
+      left: -1em;  // Alinea el círculo a la izquierda
+    }
+  }
+
+  // Estilo para sub-listas ordenadas
+  ol {
+    margin-left: 2em;  // Añadir sangría para sublistas
+    list-style: none;  // Eliminamos el estilo de lista predeterminado
+    counter-reset: subitem;  // Resetea el contador para las sublistas
+
+    li {
+      counter-increment: subitem;  // Incrementa el contador de subitem
+
+      &::before {
+        content: counter(subitem, lower-alpha);  // Muestra letras en lugar de números
+        background-color: $maincolor;  // Color de fondo del círculo
+        color: white;  // Color de la letra dentro del círculo
+        border-radius: 50%;
+        display: inline-block;
+        width: 1.2em;  // Tamaño del círculo ligeramente más pequeño para subítems
+        height: 1.2em;
+        text-align: center;
+        line-height: 1.2em;  // Alinear verticalmente la letra dentro del círculo
+        margin-right: 0.5em;
+        font-weight: bold;
+
+        position: absolute;  // Posición absoluta para alinear el círculo con precisión
+        left: -2em;  // Mover el círculo de subítem a la izquierda
+      }
+    }
   }
 }
 
@@ -247,7 +277,6 @@ $selection-bg: #26351c !default;
 // tables
 
 .reveal table {
-  // height: auto; /* Adjust table width to fit content up to the available slide space */
   margin: auto;
   border-collapse: collapse;
   border-spacing: 0;
@@ -306,7 +335,45 @@ $selection-bg: #26351c !default;
   position: absolute;
   top: 20px; // Ajusta según la posición vertical que desees
   right: 20px; // Ajusta según la posición horizontal que desees
-  width: 150px; // Ajusta el tamaño según tus necesidades
-  height: auto; // Ajuste automático de la altura para mantener la proporción
-  z-index: 10; // Asegura que esté en el frente
+  width: 150px; // Ajust
+}
+
+
+// subrayado
+.subr {
+  text-decoration: underline;     
+  text-decoration-color: $maincolor;    
+}
+
+// centrado vertical
+.center-h {
+  display: flex;                  // Usamos flexbox.
+  justify-content: center;        // Centramos horizontalmente.
+  align-items: center;            // Centramos verticalmente.
+  height: 100vh;                  // Altura del contenedor para asegurar el centrado vertical en toda la vista.
+  text-align: center;             // Alineamos el texto centrado en su bloque.
+}
+
+// tamaño texto
+.large-text {
+  font-size: 1.7em;   // Ajusta el tamaño del texto al doble del tamaño base
+}
+
+// interlineado
+.custom-line-height {
+  line-height: 1.2; // Aumenta el interlineado
+}
+
+
+.custom-arrow {
+  position: relative;
+  padding-left: 1.5em; /* Añade espacio a la izquierda para la flecha */
+}
+
+.custom-arrow::before {
+  content: $right-arrow; /* Inserta la flecha hacia la derecha */
+  position: absolute;
+  left: 0; /* Coloca la flecha a la izquierda del texto */
+  color: $maincolor; /* Establece el color de la flecha a azul */
+  font-size: 1.4em; /* Ajusta el tamaño de la flecha si es necesario */
 }
